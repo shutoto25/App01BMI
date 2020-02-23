@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    android:layout_margin="15dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BMIチェック"
-        android:textSize="20dp" />
+        android:text="@string/app_title"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:id="@+id/tvPurpose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="目標BMI：" />
+            android:text="@string/spinner_title_bmi" />
 
         <Spinner
             android:id="@+id/spBmi"
@@ -33,7 +33,7 @@
             android:id="@+id/tvSubtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="※標準BMIは22" />
+            android:text="@string/spinner_subtext_bmi" />
 
     </LinearLayout>
 
@@ -47,7 +47,7 @@
             android:id="@+id/tvWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="現在の体重：" />
+            android:text="@string/spinner_title_weight" />
 
         <Spinner
             android:id="@+id/spWeight"
@@ -58,7 +58,7 @@
             android:id="@+id/tvKg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="kg" />
+            android:text="@string/spinner_unit_of_weight" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,8 +71,7 @@
             android:id="@+id/tvHeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="現在の身長：" />
+            android:text="@string/spinner_title_height" />
 
         <Spinner
             android:id="@+id/spHeight"
@@ -83,22 +82,22 @@
             android:id="@+id/tvCm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cm" />
+            android:text="@string/spinner_unit_of_height" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:layout_margin="15sp"
-        android:text="CHECK" />
+        android:text="@string/button_check" />
 
     <TextView
         android:id="@+id/tvSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:gravity="center"
         android:textSize="15sp" />
 
 </LinearLayout>

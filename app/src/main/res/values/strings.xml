@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">App01 BMI</string>
+    <string name="app_title">BMI Checker</string>
+    <string name="spinner_title_bmi">目標BMI：</string>
+    <string name="spinner_title_weight">現在の体重：</string>
+    <string name="spinner_title_height">現在の身長：</string>
+    <string name="spinner_unit_of_weight">kg</string>
+    <string name="spinner_unit_of_height">cm</string>
+    <string name="spinner_subtext_bmi">※標準BMIは22</string>
+    <string name="button_check">Check</string>
+    <string name="toast_error_message">ちゃんと全部選択して〜〜〜</string>
+    <string name="result_text_bmi">あなたの現在のBMIは…『%1$s』です。\n</string>
+    <string name="result_text_purpose_bmi">目標のBMI：%1$sを達成するためには\n</string>
+    <string name="result_text_diff_minus">%1$skg増やす必要があります。</string>
+    <string name="result_text_diff_plus">%1$skgのダイエットが必要です。</string>
 </resources>

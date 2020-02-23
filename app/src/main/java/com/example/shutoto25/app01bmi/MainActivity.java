@@ -7,12 +7,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener {
 
+    Spinner mSpinnerBmi;
+    Spinner mSpinnerWeight;
+    Spinner mSpinnerHeight;
     Button mCheck;
     TextView mSummary;
 
@@ -31,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterBmi =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listBmi);
         adapterBmi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinnerBmi = findViewById(R.id.spBmi);
-        spinnerBmi.setAdapter(adapterBmi);
+        mSpinnerBmi = findViewById(R.id.spBmi);
+        mSpinnerBmi.setAdapter(adapterBmi);
 
         // 体重のスピナーリスト.
         ArrayList<String> listWeight = new ArrayList<>();
@@ -44,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterWeight =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listWeight);
         adapterWeight.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinnerWeight = findViewById(R.id.spWeight);
-        spinnerWeight.setAdapter(adapterWeight);
+        mSpinnerWeight = findViewById(R.id.spWeight);
+        mSpinnerWeight.setAdapter(adapterWeight);
 
         // 身長のスピナーリスト.
         ArrayList<String> listHeight = new ArrayList<>();
@@ -57,33 +62,50 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterHeight =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listHeight);
         adapterHeight.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinnerHeight = findViewById(R.id.spHeight);
-        spinnerHeight.setAdapter(adapterHeight);
+        mSpinnerHeight = findViewById(R.id.spHeight);
+        mSpinnerHeight.setAdapter(adapterHeight);
 
         mSummary = findViewById(R.id.tvSummary);
         mCheck = findViewById(R.id.btCheck);
-        mCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Double bmi = Double.parseDouble(spinnerBmi.getSelectedItem().toString());
-                Double weight = Double.parseDouble(spinnerWeight.getSelectedItem().toString());
-                Double height = Double.parseDouble(spinnerHeight.getSelectedItem().toString());
+        mCheck.setOnClickListener(this);
+    }
 
-                // bmi計算.
-                double result = weight / (height / 100 * height / 100);
-                // 目標値計算.
-                double goal = bmi * (height / 100 * height / 100);
-                // 目標達成のための体重.
-                double diff = weight - goal;
 
-                BigDecimal resultBd = new BigDecimal(result);
-                BigDecimal diffBd = new BigDecimal(diff);
+    @Override
+    public void onClick(View v) {
 
-                mSummary.setText(
-                        "あなたのBMIは..." + resultBd.setScale(1, BigDecimal.ROUND_HALF_UP) + "です。"
-                                + "目標のBMI:" + bmi + "を達成するためには、"
-                                + diffBd.setScale(1, BigDecimal.ROUND_UP) + "Kgの増減の必要があります。");
+        // 面倒だったのでまとめてトースト表示
+        // 計算→表示がごちゃごちゃしてて気持ち悪いけど
+        // どうしたらいい感じにまとまるのかわからんかったからとりあえず動くものを.
+        try {
+            double bmi = Double.parseDouble(mSpinnerBmi.getSelectedItem().toString());
+            double weight = Double.parseDouble(mSpinnerWeight.getSelectedItem().toString());
+            double height = Double.parseDouble(mSpinnerHeight.getSelectedItem().toString());
+
+            // bmi計算.
+            double result = weight / ((height / 100) * (height / 100));
+            // 目標体重計算.
+            double targetWeight = bmi * ((height / 100) * (height / 100));
+            // 目標達成までの差分.
+            double diff = targetWeight - weight;
+
+            BigDecimal resultBd = new BigDecimal(result);
+            BigDecimal diffBd = new BigDecimal(diff);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(getString(R.string.result_text_bmi, resultBd.setScale(1, BigDecimal.ROUND_HALF_UP)));
+            stringBuilder.append(getString(R.string.result_text_purpose_bmi, String.valueOf(bmi)));
+            if (diff > 0) {
+                // 増やす必要がある人
+                stringBuilder.append(getString(R.string.result_text_diff_minus, diffBd.setScale(1, BigDecimal.ROUND_UP)));
+            } else {
+                // ダイエットが必要な人
+                stringBuilder.append(getString(R.string.result_text_diff_plus, diffBd.setScale(1, BigDecimal.ROUND_UP)));
             }
-        });
+            mSummary.setText(new String(stringBuilder));
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, R.string.toast_error_message, Toast.LENGTH_SHORT).show();
+        }
     }
 }
